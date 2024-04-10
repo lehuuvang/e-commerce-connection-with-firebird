@@ -1,0 +1,68 @@
+﻿@model IEnumerable<qlbanhang.ViewModel.orderdetailViewModel>
+@using Microsoft.AspNetCore.Http;
+@using qlbanhang.Model1s;
+@using qlbanhang.Helpers;
+@{
+    ViewData["Title"] = "ShowProductWasBought";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    var id = TempData["orderid"];
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<h1>List of purchased Bill</h1>
+
+@if (TempData["myOrder"] != null)
+{
+    <form asp-action="GeneratePDF" asp-controller="Products" method="post">
+        <button style="display:none" id="btnPdf" class="btn btn-primary"> Generate to file PDF</button>
+      </form>
+<div id="pdfContainer" style="text-align:center">
+<table style="width:100%; margin-bottom:500px">
+        <tr class="title">
+            <th>Code bill</th>
+            <th>Code product</th>
+            <th>Product Name</th>
+            <th>Customer Name</th>
+            <th>Quantity</th>
+            <th>UnitPrice</th>
+            <th>Total</th>
+            <th>Status</th>
+        </tr>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.OrderId</td>
+                <td>@item.ProductId</td>
+                <td>@item.ProductName</td>
+                <td>@item.customerName</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice</td>
+                <td>@item.Discount</td>         
+                @if(@item.Status == 1){
+                   <td>Processing</td>
+                }
+                else
+                {
+                    <td>None</td>
+                }                   
+            </tr>     
+            }
+            <tr>
+                <td colspan="8" style="font-size:50px;font-weight:300">Total amount: @Model.Sum(p =>p.Discount) VNĐ</td>
+        </tr>
+</table>
+</div>
+}
+else
+{
+    <h1>Please buy item!!</h1>
+}
+        <script type="text/javascript">
+            $("#btnPdf").click(function () {
+                var sHtml = $("#pdfContainer").html();
+                sHtml = sHtml.replace(/</g, "StrTag").replace(/>/g, "EndTag");
+                window.open('../Products/GeneratePDF?html=' + sHtml, '_blank');
+            });
+        </script>
+
+
+

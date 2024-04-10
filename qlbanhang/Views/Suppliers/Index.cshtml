@@ -1,0 +1,153 @@
+﻿@model IEnumerable<qlbanhang.Model1s.Supplier>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int totalSuppliers = Model.Count();
+}
+
+<div style="display: flex; justify-content: space-between;">
+    <h1>Supplier</h1>
+    <h4 style="text-align: right;">Total: <span style="color: green;">@totalSuppliers</span> Suppliers</h4>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="input-group mb-3" style="width:900px;">
+    <input type="text" class="form-control" placeholder="Search Supplier..." id="searchInput">
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyName)
+                <button id="sortByNameBtn" style="background: none; border: none; cursor: pointer;">
+                    <span><i class="ti ti-sort-descending"></i></span>
+                </button>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Region)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomePage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Region)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomePage)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SupplierId"><span><i class="ti ti-edit"></i></span></a>
+                @* <a asp-action="Details" asp-route-id="@item.CategoryId"><span><i class="ti ti-list-details"></i></span></a> | *@
+                <a asp-action="Delete" asp-route-id="@item.SupplierId"><span style="color:red"><i class="ti ti-circle-minus"></i></span></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        document.getElementById("sortByNameBtn").addEventListener("click", function () {
+            var tableBody = document.querySelector("table tbody");
+            var rows = Array.from(tableBody.getElementsByTagName("tr"));
+
+            rows.sort(function (a, b) {
+                var nameA = a.cells[0].innerText.toUpperCase();
+                var nameB = b.cells[0].innerText.toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            tableBody.innerHTML = "";
+
+            rows.forEach(function (row) {
+                tableBody.appendChild(row);
+            });
+        });
+
+        document.getElementById("searchInput").addEventListener("input", function () {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.querySelector("table");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                var displayRow = false;
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        displayRow = true;
+                        break;
+                    }
+                }
+                tr[i].style.display = displayRow ? "" : "none";
+            }
+        });
+
+    </script>
+}

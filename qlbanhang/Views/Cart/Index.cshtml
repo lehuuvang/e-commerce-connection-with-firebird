@@ -1,0 +1,94 @@
+﻿@model IEnumerable<qlbanhang.ViewModel.CartItem>
+@{
+	Layout = "_LayoutUser";
+	ViewBag.Notdata = "empty cart";
+}	
+<!--//checkout-->
+<section class="banner-bottom-wthreelayouts py-lg-5 py-3">
+	<div class="container">
+		<div class="inner-sec-shop px-lg-4 px-3">
+			<h3 class="tittle-w3layouts my-lg-4 mt-3"> Your cart </h3>
+			@if (Model.Count() > 0)
+			{
+				<div class="checkout-right">
+					<h4>
+						Your shopping cart contains:
+						<span>@Model.Count() Products</span>
+					</h4>
+					<table class="timetable_sub">
+						<thead>
+							<tr>
+								<th>Product id</th>
+								<th>Picture</th>
+								<th>Product Name</th>
+								<th>quantity</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						@foreach (var item in Model)
+						{
+							<tbody>
+								<tr class="rem1">
+									<td class="invert">@item.ProductId</td>
+									<td class="invert-image">
+										<img src="@Url.Content(item.Picture)" alt="" class="img-responsive" style="width: 15%;">
+									</td>
+									<td class="invert">
+										<div class="quantity">
+											<div class="quantity-select">
+												<div class="entry value-minus">&nbsp;</div>
+												<div class="entry value">
+													<span>@item.ProductName</span>
+												</div>
+												<div class="entry value-plus active">&nbsp;</div>
+											</div>
+										</div>
+									</td>
+									<td class="invert">@item.quantity</td>
+
+									<td class="invert">@item.UnitPriceSS</td>
+									<td class="invert">
+										<div class="rem">
+											<div class="close1"> </div>
+										</div>
+
+									</td>
+								</tr>
+							</tbody>
+						}
+					</table>
+				</div>
+				@*<div class="checkout-left row">*@
+				<div class="checkout-right-basket">
+					<div class="col-md-4 checkout-left-basket">
+						<h4>Continue to basket</h4>
+						@foreach (var item in Model)
+						{
+							<ul>
+								<li>
+									@item.ProductName (x @item.quantity)
+									<i>-</i>
+									<span>@item.TotalUnits </span>
+								</li>
+							</ul>
+						}
+						<span>Total: @Model.Sum(p => p.TotalUnits)</span> <br>
+						<a asp-action="checkout" asp-controller="Cart" class="link-product-add-cart">Proceed Checkout</a>
+				</div>
+				@*<div class="checkout-right-basket">
+					<a href="payment.html">Check out</a>
+				</div>*@
+				<div class="clearfix"> </div>
+
+				</div>
+			}
+			else
+			{
+				@ViewBag.Notdata
+			}
+
+		</div>
+
+	</div>
+</section>
+<!--//checkout-->

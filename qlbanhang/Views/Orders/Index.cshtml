@@ -1,0 +1,118 @@
+﻿@model IEnumerable<qlbanhang.ViewModel.orderViewModelforadmin>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div style="display: flex; justify-content: space-between;">
+    <h1>List Orders</h1>
+</div>
+<div class="input-group mb-3" style="width:900px;">
+    <input type="text" class="form-control" placeholder="Search Category..." id="searchInput">
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p style="margin: 0;">Order id</p>
+                <button id="sortByNameBtn" style="background: none; border: none; cursor: pointer;">
+                    <span><i class="ti ti-sort-descending"></i></span>
+                </button>
+            </th>
+            <th>
+                <p>Customer Name</p>
+            </th>
+            <th>
+                <p>Order Date</p>
+            </th>
+            <th>
+                <p>Shipdate</p>
+            </th>
+             <th>
+                <p>ShipName</p>
+            </th>
+            <th>
+                <p>accountid</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.orderid
+                </td>
+                <td>
+                    @item.CustomerName
+                </td>
+                <td>
+                    @item.orderDate
+                </td>
+                <td>
+                    @item.ShipDate
+                </td>
+                <td>
+                    @item.shipName
+                </td>
+                <td>
+                    @item.accountid
+                </td>
+@*                <td>
+                    <img style="width:100px; height:100px" src="@Url.Content(item.Picture)" alt="Picture" />
+                </td>*@
+                <td>
+                    <a  asp-controller="Orders" asp-action="Index2" asp-route-id="@item.accountid" asp-route-id2 ="@item.orderid"><span><i class="ti ti-edit">Show user order</i></span></a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        document.getElementById("sortByNameBtn").addEventListener("click", function () {
+            var tableBody = document.querySelector("table tbody");
+            var rows = Array.from(tableBody.getElementsByTagName("tr"));
+
+            rows.sort(function (a, b) {
+                var nameA = a.cells[0].innerText.toUpperCase();
+                var nameB = b.cells[0].innerText.toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            tableBody.innerHTML = "";
+
+            rows.forEach(function (row) {
+                tableBody.appendChild(row);
+            });
+        });
+
+        document.getElementById("searchInput").addEventListener("input", function () {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.querySelector("table");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                var displayRow = false;
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        displayRow = true;
+                        break;
+                    }
+                }
+                tr[i].style.display = displayRow ? "" : "none";
+            }
+        });
+
+    </script>
+}

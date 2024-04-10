@@ -1,0 +1,122 @@
+﻿@model IEnumerable<qlbanhang.Model1s.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int total = Model.Count();
+}
+
+<div style="display: flex; justify-content: space-between;">
+    <h1>Categories</h1>
+    <h4 style="text-align: right;">Total: <span style="color: green;">@total</span> Categories</h4>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="input-group mb-3" style="width:900px;">
+    <input type="text" class="form-control" placeholder="Search Category..." id="searchInput">
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p style="margin: 0;">NAME</p>
+                <button id="sortByNameBtn" style="background: none; border: none; cursor: pointer;">
+                    <span><i class="ti ti-sort-descending"></i></span>
+                </button>
+            </th>
+            <th>
+                <p>DESCRIPTION</p>
+            </th>
+            <th>
+                <p>PICTURE</p>
+            </th>
+            <th>
+                <p>ACTIONS</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <img style="width:100px; height:100px" src="@Url.Content(item.Picture)" alt="Picture" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId"><span><i class="ti ti-edit"></i></span></a> |
+                    @* <a asp-action="Details" asp-route-id="@item.CategoryId"><span><i class="ti ti-list-details"></i></span></a> | *@
+                    <a asp-action="Delete" asp-route-id="@item.CategoryId"><span style="color:red"><i class="ti ti-circle-minus"></i></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- Hiển thị các nút phân trang -->
+@* <div class="pagination justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li style="margin-right:10px" class="@(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a href="/Categories/Index?page=@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div> *@
+@section Scripts {
+    <script>
+        document.getElementById("sortByNameBtn").addEventListener("click", function () {
+            var tableBody = document.querySelector("table tbody");
+            var rows = Array.from(tableBody.getElementsByTagName("tr"));
+
+            rows.sort(function (a, b) {
+                var nameA = a.cells[0].innerText.toUpperCase();
+                var nameB = b.cells[0].innerText.toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            tableBody.innerHTML = "";
+
+            rows.forEach(function (row) {
+                tableBody.appendChild(row);
+            });
+        });
+
+        document.getElementById("searchInput").addEventListener("input", function () {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.querySelector("table");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                var displayRow = false;
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        displayRow = true;
+                        break;
+                    }
+                }
+                tr[i].style.display = displayRow ? "" : "none";
+            }
+        });
+
+    </script>
+}

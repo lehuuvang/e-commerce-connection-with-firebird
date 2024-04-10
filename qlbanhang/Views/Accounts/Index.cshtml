@@ -1,0 +1,48 @@
+﻿@model IEnumerable<qlbanhang.Model1s.Account>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>List Account</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.AccountId"><span><i class="ti ti-edit"></i></span></a> |
+                    @* <a asp-action="Details" asp-route-id="@item.CategoryId"><span><i class="ti ti-list-details"></i></span></a> | *@
+                    <a asp-action="Delete" asp-route-id="@item.AccountId"><span style="color:red"><i class="ti ti-circle-minus"></i></span></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

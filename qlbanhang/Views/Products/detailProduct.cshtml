@@ -1,0 +1,78 @@
+﻿@model qlbanhang.ViewModel.DetailProductViewModel
+@{
+    Layout = "_LayoutUser";
+    ViewData["Title"] = "detailProduct";
+}
+<h1>Detail Product</h1>
+<div class="container">
+	<div class="inner-sec-shop pt-lg-4 pt-3">
+		<div class="row">
+			<div class="col-lg-4 single-right-left ">
+				<div class="grid images_3_of_2">
+					<div class="flexslider1">
+
+						<ul class="slides">
+							<li data-thumb="@Url.Content(@Model.Picture)">
+								<div class="thumb-image"> <img src="@Url.Content(@Model.Picture)" data-imagezoom="true" class="img-fluid" alt=" "> </div>
+							</li>							
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-8 single-right-left simpleCart_shelfItem">
+				<h3>@Model.ProductName</h3>
+				<p>
+					<span class="item_price">@Model.UnitPrice VNĐ</span>
+					<del>4000</del>
+				</p>
+				<div class="rating1">
+					<ul class="stars">
+						<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+						<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+						<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+						<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+						<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+					</ul>
+				</div>
+				<div class="description">
+					<h5>@Model.Description</h5>
+					@*	<form action="#" method="post">
+					<input class="form-control" type="text" name="Email" placeholder="Please enter..." required="">
+					<input type="submit" value="Check">
+					</form>*@
+				</div>
+				<div class="color-quality">
+					<div class="color-quality-right">
+						<h5>Quantity : @Model.QuantityUnit</h5>
+						@*<select id="country1" onchange="change_country(this.value)" class="frm-field required sect">
+						<option value="null">5 Qty</option>
+						<option value="null">6 Qty</option>
+						<option value="null">7 Qty</option>
+						<option value="null">10 Qty</option>
+						</select>*@
+					</div>
+				</div>
+				<div class="occasional">
+					<h5>Types: @Model.CategoryName</h5>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="occasion-cart">
+					<div class="googles single-item singlepage">
+						<form asp-action="addToCart" asp-controller="Cart" asp-route-id="@Model.ProductID" method="post">
+							<button type="submit" class="googles-cart pgoogles-cart">
+								Add to Cart
+							</button>
+						</form>
+
+					</div>
+				</div>				
+			</div>
+			<div class="clearfix"> </div>
+			<div class="clearfix"> </div>
+			<div class="clearfix"> </div>
+			<!--/tabs-->
+		</div>
+	</div>
+</div>
+
